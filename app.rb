@@ -1,5 +1,4 @@
 require 'bundler'
-require 'ostruct'
 Bundler.require
 
 module UserVoice
