@@ -3,6 +3,8 @@
   <h1>Uservoice OAuth Example</h1>
   <% if @current_user %>
     <p>Logged in as <a href='mailto:<%= @current_user['email'] %>'><%= @current_user['name'] %></a></p>
+  <% elsif @auth_system_down %>
+    <p>Unfortunately the authentication system is down, try again after a while. We are very sorry for the inconvenience!</p>
   <% else %>
     <p><a class="btn primary large" href="/authorize-uservoice">Authorize yourself &raquo;</a></p>
   <% end %>

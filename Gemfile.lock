@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/uservoice/uservoice-ruby.git
-  revision: a7a4063b699f21b4b38f03f60aa4c9edc6624cbf
+  revision: 531cd5cd82b9b2165e668a61fa94fe190608ea81
   specs:
     uservoice (0.0.1)
       ezcrypto
@@ -11,8 +11,8 @@ GEM
   remote: http://rubygems.org/
   specs:
     ezcrypto (0.7.2)
-    json (1.6.5)
-    oauth (0.4.5)
+    json (1.7.5)
+    oauth (0.4.6)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
