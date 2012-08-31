@@ -18,13 +18,17 @@ class MyApp < Sinatra::Base
     end
 
     if client.logged_in?
-      @current_user = JSON.parse(client.get('/api/v1/users/current.json').body)['user']
+      @current_user = client.get('/api/v1/users/current.json')['user']
     end
   end
   
   get '/' do    
-    @request_token = client.request_token
-    @access_token = client.access_token
+    begin
+      @request_token = client.request_token
+      @access_token = client.access_token
+    rescue Errno::ECONNREFUSED
+      @auth_system_down = true
+    end
     erb :index
   end
 
