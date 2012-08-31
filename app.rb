@@ -1,49 +1,35 @@
 require 'bundler'
 Bundler.require
 
-module UserVoice
-  module OAuth
-    class Consumer < ::OAuth::Consumer
-      def initialize(opts)      
-        subdomain = opts.delete("subdomain")
-        key = opts.delete("key")
-        secret = opts.delete("secret")
-      
-        raise unless subdomain && key && secret
-      
-        site = "https://#{subdomain}.uservoice.com"
-        super(key, secret, opts.merge(:site => site))
-      end
-    end
-  end
-end
-
 class MyApp < Sinatra::Base
   use Rack::Session::Pool, :expire_after => 2592000
-  OauthCallbackUrl = 'http://localhost:4567/'
-  UserVoiceConfig = JSON.parse(File.read(File.expand_path("../uservoice_config.json", __FILE__)))
-  UserVoiceConsumer = UserVoice::OAuth::Consumer.new(UserVoiceConfig)
+  config = YAML.load_file(File.expand_path('../config.yml', __FILE__))
+  client = UserVoice::Client.new(config['subdomain_name'],
+                                 config['api_key'],
+                                 config['api_secret'],
+                                :uservoice_domain => config['uservoice_domain'],
+                                :protocol => config['protocol'],
+                                :callback => 'http://localhost:4567/')
   
   before do
-    @request_token = session[:request_token]
-    @access_token = session[:access_token]
-    
-    if !@access_token && @request_token && params[:oauth_verifier]
-      session[:access_token] = @access_token = @request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
-      @uservoice_user = @access_token.get('/api/v1/users/current.json').body
-    elsif @access_token
-      @uservoice_user = @access_token.get('/api/v1/users/current.json').body
+    if params[:oauth_verifier]
+      client.login_verified_user(params[:oauth_verifier])
+      redirect to('/')
+    end
+
+    if client.logged_in?
+      @current_user = JSON.parse(client.get('/api/v1/users/current.json').body)['user']
     end
   end
   
   get '/' do    
+    @request_token = client.request_token
+    @access_token = client.access_token
     erb :index
   end
-  
+
   get '/authorize-uservoice' do
-    request_token = UserVoiceConsumer.get_request_token(:oauth_callback => OauthCallbackUrl)
-    session[:request_token] = request_token
-    redirect request_token.authorize_url
+    redirect client.authorize_url
   end
     
   run! if app_file == $0
