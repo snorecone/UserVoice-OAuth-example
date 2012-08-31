@@ -1,3 +1,3 @@
-change your key, secret and subdomain in ```uservoice_config.json```
+Change your key, secret and subdomain in ```config.yml```
 run ```bundle install```
 then ```ruby app.rb```
