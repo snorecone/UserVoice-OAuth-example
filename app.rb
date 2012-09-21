@@ -13,23 +13,32 @@ class MyApp < Sinatra::Base
   
   before do
     if params[:oauth_verifier]
-      client.login_verified_user(params[:oauth_verifier])
+      session[:access_token] = client.login_with_verifier(params[:oauth_verifier])
       redirect to('/')
     end
 
-    if client.logged_in?
-      @current_user = client.get('/api/v1/users/current.json')['user']
+    if session[:access_token]
+      @current_user = session[:access_token].get('/api/v1/users/current.json')['user']
     end
   end
   
   get '/' do    
     begin
       @request_token = client.request_token
-      @access_token = client.access_token
+      @access_token = session[:access_token]
+      @q = params[:q] || '/api/v1/users/current.json'
     rescue Errno::ECONNREFUSED
       @auth_system_down = true
     end
     erb :index
+  end
+
+  get '/request' do
+    begin
+      session[:access_token].request(params[:method], params[:q]).to_json
+    rescue Exception => e
+      e.backtrace.join("\n")
+    end
   end
 
   get '/authorize-uservoice' do
