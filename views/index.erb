@@ -12,16 +12,30 @@
 
 <!-- Example row of columns -->
 <div class="row">
-  <div class="span6">
+  <div class="span7">
     <h2>Request token</h2>
     <textarea rows="20" cols="30" style="width:100%;"><%= @request_token.inspect %></textarea>
   </div>
-  <div class="span5">
+  <div class="span7">
     <h2>Access token</h2>
-     <textarea rows="20" cols="30" style="width:100%;"><%= @access_token.inspect %></textarea>
- </div>
-  <div class="span5">
+    <textarea rows="20" cols="30" style="width:100%;"><%= @access_token.inspect %></textarea>
+  </div>
+  <div class="span7">
     <h2>Current user</h2>
     <textarea rows="20" cols="30" style="width:100%;"><%= @current_user.inspect %></textarea>
+  </div>
+</div>
+<div class="row">
+  <div class="span21">
+    <h2>API console</h2>
+    <form id="console" action="/request" name="method">
+      <select style="width:15%;display: inline; margin-right: 30px;" name="method">
+        <% %w(get post put delete).each do |method| %>
+          <option <%= 'selected' if @method == method %> value='<%= method %>'> <%= method.upcase %> </option>
+        <% end %>
+      </select>
+      <input name="q" type="text" style="display: inline;width:80%;" value="<%= @q %>" />
+      <textarea class="output" rows="10" cols="30" style="width:100%;"><%= @result %></textarea>
+    </form>
   </div>
 </div>
