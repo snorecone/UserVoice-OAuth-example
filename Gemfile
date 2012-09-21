@@ -1,6 +1,5 @@
-source "http://rubygems.org"
+source :gemcutter
 
-gem "sinatra", :require => ['sinatra/base']
-gem "oauth"
-gem "json"
-gem "uservoice", :git => 'https://github.com/uservoice/uservoice-ruby.git'
+gem 'sinatra', :require => ['sinatra/base']
+gem 'json'
+gem "uservoice-ruby", "~> 0.0.4"

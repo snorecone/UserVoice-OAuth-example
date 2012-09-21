@@ -1,32 +1,26 @@
-GIT
-  remote: https://github.com/uservoice/uservoice-ruby.git
-  revision: 531cd5cd82b9b2165e668a61fa94fe190608ea81
-  specs:
-    uservoice (0.0.1)
-      ezcrypto
-      json
-      oauth
-
 GEM
   remote: http://rubygems.org/
   specs:
     ezcrypto (0.7.2)
     json (1.7.5)
-    oauth (0.4.6)
+    oauth (0.4.7)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
-    sinatra (1.3.2)
+    sinatra (1.3.3)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
       tilt (~> 1.3, >= 1.3.3)
     tilt (1.3.3)
+    uservoice-ruby (0.0.4)
+      ezcrypto (>= 0.7.2)
+      json (>= 1.7.5)
+      oauth (>= 0.4.7)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   json
-  oauth
   sinatra
-  uservoice!
+  uservoice-ruby (~> 0.0.4)
