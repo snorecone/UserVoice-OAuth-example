@@ -3,13 +3,26 @@ Bundler.require
 
 class MyApp < Sinatra::Base
   use Rack::Session::Pool, :expire_after => 2592000
-  config = YAML.load_file(File.expand_path('../config.yml', __FILE__))
-  client = UserVoice::Client.new(config['subdomain_name'],
+
+  def config
+    @config ||= YAML.load_file(File.expand_path('../config.yml', __FILE__))
+  end
+
+  def client
+    session[:client] ||= UserVoice::Client.new(config['subdomain_name'],
                                  config['api_key'],
                                  config['api_secret'],
                                 :uservoice_domain => config['uservoice_domain'],
                                 :protocol => config['protocol'],
                                 :callback => 'http://localhost:4567/')
+  end
+
+  def current_sso_token
+    unless @current_user.nil?
+      user = { :email => @current_user['email'], :trusted => true }
+      return UserVoice.generate_sso_token(config['subdomain_name'], config['sso_key'], user, 300)
+    end
+  end
   
   before do
     if params[:oauth_verifier]
