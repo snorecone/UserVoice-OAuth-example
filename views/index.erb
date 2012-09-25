@@ -1,13 +1,6 @@
 <!-- Main hero unit for a primary marketing message or call to action -->
 <div class="hero-unit">
   <h1>Uservoice OAuth Example</h1>
-  <% if @current_user %>
-    <p>Logged in as <a href='mailto:<%= @current_user['email'] %>'><%= @current_user['name'] %></a></p>
-  <% elsif @auth_system_down %>
-    <p>Unfortunately the authentication system is down, try again after a while. We are very sorry for the inconvenience!</p>
-  <% else %>
-    <p><a class="btn primary large" href="/authorize-uservoice">Authorize yourself &raquo;</a></p>
-  <% end %>
 </div>
 
 <!-- Example row of columns -->
@@ -22,7 +15,7 @@
   </div>
   <div class="span7">
     <h2>Current user</h2>
-    <textarea rows="20" cols="30" style="width:100%;"><%= @current_user.inspect %></textarea>
+    <textarea rows="20" cols="30" style="width:100%;"><%= current_user.inspect %></textarea>
   </div>
 </div>
 <div class="row">
