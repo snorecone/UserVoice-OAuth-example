@@ -55,8 +55,8 @@ class MyApp < Sinatra::Base
   get '/request' do
     begin
       session[:access_token].request(params[:method], params[:q]).to_json
-    rescue Exception => e
-      e.backtrace.join("\n")
+    rescue UserVoice::Unauthorized => e
+      e.to_s
     end
   end
 

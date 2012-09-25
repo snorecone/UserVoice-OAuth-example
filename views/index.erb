@@ -18,17 +18,19 @@
     <textarea rows="20" cols="30" style="width:100%;"><%= current_user.inspect %></textarea>
   </div>
 </div>
-<div class="row">
-  <div class="span21">
-    <h2>API console</h2>
-    <form id="console" action="/request" name="method">
-      <select style="width:15%;display: inline; margin-right: 30px;" name="method">
-        <% %w(get post put delete).each do |method| %>
-          <option <%= 'selected' if @method == method %> value='<%= method %>'> <%= method.upcase %> </option>
-        <% end %>
-      </select>
-      <input name="q" type="text" style="display: inline;width:80%;" value="<%= @q %>" />
-      <textarea class="output" rows="10" cols="30" style="width:100%;"><%= @result %></textarea>
-    </form>
+<% if current_user %>
+  <div class="row">
+    <div class="span21">
+      <h2>API console</h2>
+      <form id="console" action="/request" name="method">
+        <select style="width:15%;display: inline; margin-right: 30px;" name="method">
+          <% %w(get post put delete).each do |method| %>
+            <option <%= 'selected' if @method == method %> value='<%= method %>'> <%= method.upcase %> </option>
+          <% end %>
+        </select>
+        <input name="q" type="text" style="display: inline;width:80%;" value="<%= @q %>" />
+        <textarea class="output" rows="10" cols="30" style="width:100%;"><%= @result %></textarea>
+      </form>
+    </div>
   </div>
-</div>
+<% end %>
